@@ -94,6 +94,20 @@
 			</div>
 		</div>
 
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<!-- Pie chart container after the table -->
+					<div class="my-4">
+						<canvas
+							id="mealsPieChart"
+							height="120"
+						></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<!-- Replace the inline date input with a modal popup for the calendar -->
 		<!-- Add this modal just before the closing </body> tag -->
 		<div
@@ -104,10 +118,18 @@
 			aria-labelledby="calendarModalLabel"
 			aria-hidden="true"
 		>
-			<div class="modal-dialog modal-dialog-centered" role="document">
+			<div
+				class="modal-dialog modal-dialog-centered"
+				role="document"
+			>
 				<div class="modal-content bg-dark text-white">
 					<div class="modal-header border-0">
-						<h5 class="modal-title" id="calendarModalLabel">Pick a Date</h5>
+						<h5
+							class="modal-title"
+							id="calendarModalLabel"
+						>
+							Pick a Date
+						</h5>
 						<button
 							type="button"
 							class="close text-white"
@@ -216,6 +238,74 @@
 				}
 			}
 
+			let pieChartInstance = null;
+
+			function updatePieChart() {
+				const rows = document.querySelectorAll('#meals tr');
+				let totalCarbs = 0;
+				let totalProtein = 0;
+				let totalFats = 0;
+				let totalCalories = 0;
+
+				rows.forEach((row) => {
+					const cells = row.querySelectorAll('td');
+					if (cells.length >= 5) {
+						totalCarbs += parseFloat(cells[1].textContent) || 0;
+						totalProtein += parseFloat(cells[2].textContent) || 0;
+						totalFats += parseFloat(cells[3].textContent) || 0;
+						totalCalories += parseFloat(cells[4].textContent) || 0;
+					}
+				});
+
+				const ctx = document
+					.getElementById('mealsPieChart')
+					.getContext('2d');
+				if (pieChartInstance) {
+					pieChartInstance.destroy();
+				}
+				pieChartInstance = new Chart(ctx, {
+					type: 'pie',
+					data: {
+						labels: ['Carbs', 'Protein', 'Fats', 'Calories'],
+						datasets: [
+							{
+								data: [
+									totalCarbs,
+									totalProtein,
+									totalFats,
+									totalCalories,
+								],
+								backgroundColor: [
+									'rgba(111, 66, 193, 0.7)', // Carbs
+									'rgba(40, 167, 69, 0.7)', // Protein
+									'rgba(255, 193, 7, 0.7)', // Fats
+									'rgba(220, 53, 69, 0.7)', // Calories
+								],
+								borderColor: [
+									'#6f42c1',
+									'#28a745',
+									'#ffc107',
+									'#dc3545',
+								],
+								borderWidth: 1,
+							},
+						],
+					},
+					options: {
+						responsive: true,
+						plugins: {
+							legend: { labels: { color: '#fff' } },
+						},
+					},
+				});
+			}
+
+			// Update pie chart whenever table changes
+			function updateTotalsAndCharts() {
+				updateTotals();
+				updatePieChart();
+			}
+
 			document.getElementById('add-row').onclick = function () {
 				const tr = document.createElement('tr');
 				tr.innerHTML = `
@@ -227,30 +317,28 @@
             <td><button class="btn btn-sm remove-row" style="background-color: #6f42c1">&times;</button></td>
         `;
 				tbody.appendChild(tr);
-				updateTotals();
+				updateTotalsAndCharts();
 			};
 
 			tbody.addEventListener('click', function (e) {
 				if (e.target && e.target.classList.contains('remove-row')) {
 					const row = e.target.closest('tr');
 					if (row) row.remove();
-					updateTotals();
+					updateTotalsAndCharts();
 				}
 			});
 
-			// Update totals when table cells are edited
 			tbody.addEventListener('input', function (e) {
-				updateTotals();
+				updateTotalsAndCharts();
 			});
 
-			// Initial totals update
-			updateTotals();
+			// Initial chart update
+			updatePieChart();
 
 			// Show modal popup when clicking the journal date
 			document.getElementById('journal-date').onclick = function () {
-				document.getElementById('modal-date-picker').value = formatDateToInput(
-					currentDate
-				);
+				document.getElementById('modal-date-picker').value =
+					formatDateToInput(currentDate);
 				$('#calendarModal').modal('show');
 			};
 
@@ -270,5 +358,7 @@
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		<!-- Add Chart.js CDN before your script tags if not already present -->
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	</body>
 </html>
