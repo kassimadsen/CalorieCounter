@@ -41,7 +41,7 @@
 		</div>
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-8">
 					<div class="card text-white bg-dark mb-3">
 						<div class="card-body">
 							<div
@@ -91,17 +91,21 @@
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<!-- Pie chart container after the table -->
-					<div class="my-4">
+				<div
+					class="col-md-4 d-flex align-items-center justify-content-center"
+				>
+					<!-- Pie chart container next to the table -->
+					<div class="my-4 w-100 text-center">
 						<canvas
 							id="mealsPieChart"
-							height="120"
+							width="300"
+							height="300"
+							style="
+								max-width: 300x;
+								max-height: 300px;
+								margin: 0 auto;
+								display: block;
+							"
 						></canvas>
 					</div>
 				</div>
