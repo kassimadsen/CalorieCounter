@@ -165,6 +165,12 @@
 			</div>
 		</div>
 
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		<!-- Add Chart.js CDN before your script tags if not already present -->
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 		<script>
 			// Set up date navigation
 			let currentDate = new Date();
@@ -343,6 +349,7 @@
 			document.getElementById('journal-date').onclick = function () {
 				document.getElementById('modal-date-picker').value =
 					formatDateToInput(currentDate);
+				// Use jQuery to show the modal (Bootstrap 4)
 				$('#calendarModal').modal('show');
 			};
 
@@ -356,13 +363,6 @@
 				}
 				$('#calendarModal').modal('hide');
 			};
-
-			// Also allow closing modal with the close button (handled by Bootstrap)
 		</script>
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-		<!-- Add Chart.js CDN before your script tags if not already present -->
-		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	</body>
 </html>
