@@ -79,6 +79,7 @@
 									</tr>
 								</thead>
 								<tbody id="meals"></tbody>
+								<tfoot id="meals-tfoot"></tfoot>
 							</table>
 							<button
 								id="add-row"
@@ -126,6 +127,42 @@
 
 			// Add and remove row functionality
 			const tbody = document.getElementById('meals');
+			function updateTotals() {
+				let carbs = 0,
+					protein = 0,
+					fats = 0,
+					calories = 0;
+				const rows = document.querySelectorAll('#meals tr');
+				const tfoot = document.getElementById('meals-tfoot');
+
+				if (rows.length > 0) {
+					// Calculate totals
+					rows.forEach((row) => {
+						const cells = row.querySelectorAll('td');
+						if (cells.length >= 5) {
+							carbs += parseFloat(cells[1].textContent) || 0;
+							protein += parseFloat(cells[2].textContent) || 0;
+							fats += parseFloat(cells[3].textContent) || 0;
+							calories += parseFloat(cells[4].textContent) || 0;
+						}
+					});
+					// Add or update total row
+					tfoot.innerHTML = `
+                <tr>
+                    <th style="text-align: right">Total</th>
+                    <th id="total-carbs">${carbs}</th>
+                    <th id="total-protein">${protein}</th>
+                    <th id="total-fats">${fats}</th>
+                    <th id="total-calories">${calories}</th>
+                    <th></th>
+                </tr>
+            `;
+				} else {
+					// Remove total row if no data
+					tfoot.innerHTML = '';
+				}
+			}
+
 			document.getElementById('add-row').onclick = function () {
 				const tr = document.createElement('tr');
 				tr.innerHTML = `
@@ -137,14 +174,24 @@
             <td><button class="btn btn-sm remove-row" style="background-color: #6f42c1">&times;</button></td>
         `;
 				tbody.appendChild(tr);
+				updateTotals();
 			};
 
 			tbody.addEventListener('click', function (e) {
 				if (e.target && e.target.classList.contains('remove-row')) {
 					const row = e.target.closest('tr');
 					if (row) row.remove();
+					updateTotals();
 				}
 			});
+
+			// Update totals when table cells are edited
+			tbody.addEventListener('input', function (e) {
+				updateTotals();
+			});
+
+			// Initial totals update
+			updateTotals();
 		</script>
 	</body>
 </html>
