@@ -93,9 +93,62 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- Replace the inline date input with a modal popup for the calendar -->
+		<!-- Add this modal just before the closing </body> tag -->
+		<div
+			class="modal fade"
+			id="calendarModal"
+			tabindex="-1"
+			role="dialog"
+			aria-labelledby="calendarModalLabel"
+			aria-hidden="true"
+		>
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content bg-dark text-white">
+					<div class="modal-header border-0">
+						<h5 class="modal-title" id="calendarModalLabel">Pick a Date</h5>
+						<button
+							type="button"
+							class="close text-white"
+							data-dismiss="modal"
+							aria-label="Close"
+							style="opacity: 1"
+						>
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body text-center">
+						<input
+							type="date"
+							id="modal-date-picker"
+							class="form-control"
+							style="max-width: 220px; margin: 0 auto"
+						/>
+					</div>
+					<div class="modal-footer border-0">
+						<button
+							type="button"
+							class="btn btn-outline-purple"
+							id="calendar-ok-btn"
+						>
+							OK
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<script>
 			// Set up date navigation
 			let currentDate = new Date();
+
+			function formatDateToInput(date) {
+				const year = date.getFullYear();
+				const month = String(date.getMonth() + 1).padStart(2, '0');
+				const day = String(date.getDate()).padStart(2, '0');
+				return `${year}-${month}-${day}`;
+			}
 
 			function updateJournalDate() {
 				const options = {
@@ -192,6 +245,30 @@
 
 			// Initial totals update
 			updateTotals();
+
+			// Show modal popup when clicking the journal date
+			document.getElementById('journal-date').onclick = function () {
+				document.getElementById('modal-date-picker').value = formatDateToInput(
+					currentDate
+				);
+				$('#calendarModal').modal('show');
+			};
+
+			// When OK is clicked in the modal, update the date and close modal
+			document.getElementById('calendar-ok-btn').onclick = function () {
+				const val = document.getElementById('modal-date-picker').value;
+				if (val) {
+					const [year, month, day] = val.split('-');
+					currentDate = new Date(year, month - 1, day);
+					updateJournalDate();
+				}
+				$('#calendarModal').modal('hide');
+			};
+
+			// Also allow closing modal with the close button (handled by Bootstrap)
 		</script>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	</body>
 </html>
