@@ -1,0 +1,56 @@
+.main {
+	background-color: #000;
+}
+
+.navbar {
+	background-color: #6f42c1;
+}
+
+.btn-outline-purple {
+	color: #fff;
+	border-color: #6f42c1;
+	background-color: transparent;
+}
+.btn-outline-purple:hover,
+.btn-outline-purple:focus {
+	color: #fff;
+	background-color: #6f42c1;
+	border-color: #6f42c1;
+}
+
+.btn btn-sm remove-row {
+	background-color: #6f42c1;
+}
+
+th .food-header {
+	width: 20%;
+}
+
+.close {
+	opacity: 1;
+}
+
+#close-button {
+	background-color: #6f42c1;
+}
+
+#modal-date-picker {
+	max-width: 220px;
+	margin: 0 auto;
+}
+
+#total {
+	text-align: right;
+}
+
+#add-row {
+	background-color: #222;
+	color: #fff;
+}
+
+#mealsPieChart {
+	max-width: 300x;
+	max-height: 300px;
+	margin: 0 auto;
+	display: block;
+}

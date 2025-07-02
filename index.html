@@ -5,35 +5,18 @@
 			rel="stylesheet"
 			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 		/>
-		<style>
-			.btn-outline-purple {
-				color: #fff;
-				border-color: #6f42c1;
-				background-color: transparent;
-			}
-			.btn-outline-purple:hover,
-			.btn-outline-purple:focus {
-				color: #fff;
-				background-color: #6f42c1;
-				border-color: #6f42c1;
-			}
-		</style>
+		<link
+			rel="stylesheet"
+			href="index.css"
+		/>
 	</head>
 
-	<body style="background-color: #000">
+	<body class="main">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<nav
-						class="navbar navbar-dark"
-						style="background-color: #6f42c1"
-					>
+					<nav class="navbar navbar-dark">
 						<span class="navbar-brand">Calorie Tracker</span>
-						<a
-							href="/home"
-							class="navbar-brand"
-							>Home</a
-						>
 					</nav>
 				</div>
 			</div>
@@ -69,13 +52,13 @@
 								id="meals-table"
 							>
 								<thead>
-									<tr>
-										<th style="width: 20%">Food Item</th>
-										<th style="width: 20%">Carbs</th>
-										<th style="width: 20%">Protein</th>
-										<th style="width: 20%">Fats</th>
-										<th style="width: 20%">Calories</th>
-										<th style="width: 10%">Remove Item</th>
+									<tr class="food-header">
+										<th>Food Item</th>
+										<th>Carbs</th>
+										<th>Protein</th>
+										<th>Fats</th>
+										<th>Calories</th>
+										<th>Remove Item</th>
 									</tr>
 								</thead>
 								<tbody id="meals"></tbody>
@@ -100,12 +83,6 @@
 							id="mealsPieChart"
 							width="300"
 							height="300"
-							style="
-								max-width: 300x;
-								max-height: 300px;
-								margin: 0 auto;
-								display: block;
-							"
 						></canvas>
 					</div>
 				</div>
@@ -139,7 +116,6 @@
 							class="close text-white"
 							data-dismiss="modal"
 							aria-label="Close"
-							style="opacity: 1"
 						>
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -149,7 +125,6 @@
 							type="date"
 							id="modal-date-picker"
 							class="form-control"
-							style="max-width: 220px; margin: 0 auto"
 						/>
 					</div>
 					<div class="modal-footer border-0">
@@ -234,7 +209,7 @@
 					// Add or update total row
 					tfoot.innerHTML = `
                 <tr>
-                    <th style="text-align: right">Total</th>
+                    <th id="total">Total</th>
                     <th id="total-carbs">${carbs}</th>
                     <th id="total-protein">${protein}</th>
                     <th id="total-fats">${fats}</th>
@@ -319,12 +294,12 @@
 			document.getElementById('add-row').onclick = function () {
 				const tr = document.createElement('tr');
 				tr.innerHTML = `
-            <td contenteditable="true" style="background-color: #222; color: #fff;"></td>
-            <td contenteditable="true" style="background-color: #222; color: #fff;"></td>
-            <td contenteditable="true" style="background-color: #222; color: #fff;"></td>
-			<td contenteditable="true" style="background-color: #222; color: #fff;"></td>
-			<td contenteditable="true" style="background-color: #222; color: #fff;"></td>
-            <td><button class="btn btn-sm remove-row" style="background-color: #6f42c1">&times;</button></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+			<td contenteditable="true"></td>
+			<td contenteditable="true"></td>
+            <td><button id="close-button" class="btn btn-sm remove-row">&times;</button></td>
         `;
 				tbody.appendChild(tr);
 				updateTotalsAndCharts();
